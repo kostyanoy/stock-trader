@@ -1,4 +1,8 @@
+.idea
 creds
 simulation/logs
 simulation/saves
 simulation/data
+simulation/test*
+simulation/*.txt
+test*
