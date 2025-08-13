@@ -1,3 +1,5 @@
+import os.path
+
 from tinkoff.invest import Quotation, Client, AssetInstrument, PositionsResponse, InstrumentIdType, InstrumentResponse, \
     MoneyValue
 
@@ -77,7 +79,14 @@ def get_account_balance(token: str, account_id: str, _client=Client) -> float:
         r = client.operations.get_portfolio(account_id=account_id).total_amount_portfolio
         return quotation_to_float(r)
 
+
 def get_instruments_prices(token: str, instrument_ids: list, _client=Client):
     with _client(token) as client:
         resp = client.market_data.get_last_prices(instrument_id=instrument_ids)
         return resp
+
+
+def ensure_dirs_exist(paths: list[str]):
+    for path in paths:
+        dir_path = os.path.dirname(path)
+        os.makedirs(dir_path, exist_ok=True)

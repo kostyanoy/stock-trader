@@ -15,6 +15,7 @@ class Instrument:
     last_changed: float | None = None
     stock_per_step: int = 1
     mode: str = "track"
+    rolling_amount: int = 0
 
     def get_last_price(self):
         return self.last_price
@@ -33,3 +34,9 @@ class Instrument:
 
     def update_last_changed(self):
         self.last_changed = time.time()
+
+    def update_rolling_amount(self, is_buy: bool):
+        if is_buy:
+            self.rolling_amount = max(self.rolling_amount, 0) + 1
+        else:
+            self.rolling_amount = min(self.rolling_amount, 0) - 1

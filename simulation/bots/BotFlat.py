@@ -4,8 +4,8 @@ from simulation.instruments.Instrument import Instrument
 
 # Bot with fixed step for buying shares
 class BotFlat(Bot):
-    def __init__(self, account: Account, instrument: Instrument, step_percent: float, logging: bool = False):
-        super().__init__(account, instrument, logging)
+    def __init__(self, account: Account, instrument: Instrument, step_percent: float, is_logging: bool = False):
+        super().__init__(account, instrument, is_logging)
         self.step = step_percent * self.instrument.get_last_price() / 100
 
     def check_market(self) -> int:
@@ -16,7 +16,7 @@ class BotFlat(Bot):
 
         return sign * amount
 
-    def update_last_price(self, amount: int) -> float:
+    def update_instrument(self, amount: int) -> float:
         price = self.instrument.get_last_price() - amount * self.step
         self.instrument.set_last_price(price)
         return price

@@ -4,8 +4,8 @@ from simulation.instruments.Instrument import Instrument
 
 # Bot with floating step where each  step is percent from price
 class BotProportional(Bot):
-    def __init__(self, account: Account, instrument: Instrument, step_percent: float, logging: bool = False):
-        super().__init__(account, instrument, logging)
+    def __init__(self, account: Account, instrument: Instrument, step_percent: float, is_logging: bool = False):
+        super().__init__(account, instrument, is_logging)
         self.step = step_percent
 
     def check_market(self) -> int:
@@ -16,7 +16,7 @@ class BotProportional(Bot):
 
         return sign * amount
 
-    def update_last_price(self, step_amount: int) -> float:
+    def update_instrument(self, step_amount: int) -> float:
         cur_price = self.account.get_price([self.instrument])[self.instrument.instrument_id]
         last_price = self.instrument.get_last_price()
         price = last_price - (self.step * step_amount / 100) * max(last_price, cur_price)

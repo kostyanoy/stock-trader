@@ -1,13 +1,15 @@
 import creds
 from simulation.instruments import saving
-from simulation.instruments.utils import instrument_from_ticker
+from simulation.instruments.utils import instrument_from_ticker, ensure_dirs_exist
 from simulation.price.PriceShare import PriceShare
 
-TOKEN = creds.SANDBOX_TOKEN
-SAVE_PATH = "../saves/trur_trader_fixed_step/"
+TOKEN = creds.TEST_TOKEN
+SAVE_PATH = "../saves/trur_trader_rolling_step/"
 
 
 def main():
+    ensure_dirs_exist([SAVE_PATH])
+
     # init
     price_manager = PriceShare(TOKEN)
 

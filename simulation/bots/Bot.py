@@ -6,10 +6,10 @@ from simulation.instruments.Instrument import Instrument
 
 # Abstract Bot class with default methods
 class Bot(ABC):
-    def __init__(self, account: Account, instrument: Instrument, logging: bool):
+    def __init__(self, account: Account, instrument: Instrument, is_logging: bool):
         self.account = account # managing operations
         self.instrument = instrument # share
-        self.logging = logging # logging mode
+        self.logging = is_logging # logging mode
 
         if instrument.get_last_price() is None:
             instrument.set_last_price(account.get_price([instrument])[instrument.instrument_id])
@@ -19,9 +19,9 @@ class Bot(ABC):
     def check_market(self) -> int:
         pass
 
-    # how the treshhold changes from amount
+    # how the instrument changes from amount
     @abstractmethod
-    def update_last_price(self, amount: int) -> float:
+    def update_instrument(self, amount: int) -> float:
         pass
 
     # try buy/sell shares with account
@@ -53,7 +53,7 @@ class Bot(ABC):
         if self.logging:
             self.print_log(abs(shares_amount), shares_amount > 0, str(res))
         if res:
-            self.update_last_price(steps_amount)
+            self.update_instrument(steps_amount)
             self.instrument.update_last_changed()
         return res, shares_amount
 
@@ -63,6 +63,6 @@ class Bot(ABC):
         shares_amount = steps_amount * self.instrument.stock_per_step
         if self.logging:
             self.print_log(abs(shares_amount), shares_amount > 0, "Tracking")
-        self.update_last_price(steps_amount)
+        self.update_instrument(steps_amount)
         self.instrument.update_last_changed()
         return shares_amount
